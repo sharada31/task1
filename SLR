@@ -1,0 +1,58 @@
+ur1="http://bit.ly/w-data"
+data_s<-read.csv(ur1)
+head(data_s)
+
+dim(data_s)
+
+summary(data_s)
+
+x<-data_s$Hours
+y<-data_s$Scores
+plot(x,y,xlab="Hours studied",ylab="percentage Scored",main="Hours Vs Percentage")
+
+cor(x,y)
+
+dt<-sort(sample(nrow(data_s)*0.8))
+data_train=data_s[dt,]
+data_test=data_s[-dt]
+
+
+# Training the algorithm
+
+model<-lm(Scores~Hours, data=data_train)
+s=summary(model)
+s
+
+coefficients(model)
+
+# Scatter plot with the line of regression
+
+#Thus,the model is ( Percentage Score)=3.03128304+9.520386094(Hours Studied)
+
+s$r.squared
+
+#The value of coefficient of determination is 0.95545625, which indicates that the model is a good fit.
+#Scatter plot with the line of regression
+
+x<-data_s$Hours
+y<-data_s$Scores
+plot(x,y,xlab="Hours Studied",ylab="Scores",main = "Hours VS  Percentage",col="green")
+abline(model,col="red")
+
+
+#Making prediction
+#comparing Actual and predicted Scores
+
+x_test=data_test[1]
+y_test=data_test[2]
+Y_pred=predict(model,x_test)
+data_p=data.frame("Actual"=y_test, "Predicted_Scores"=Y_pred)
+data_p
+
+#Predicting scores of a Student who studied for 9.25 hours/day.
+
+
+#Result
+
+#An approx. 93% is achieved by student if the studies for 9.25 hrs/day.
+#Thank you
